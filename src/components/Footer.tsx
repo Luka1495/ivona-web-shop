@@ -1,6 +1,5 @@
 // src/components/Footer.tsx
 
-import Link from "next/link";
 import { Instagram } from "lucide-react";
 
 export default function Footer() {
@@ -10,9 +9,6 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-[#6f6259] md:flex-row md:text-left">
           <p>© {new Date().getFullYear()} IVONA</p>
           <div className="flex items-center gap-4">
-            <Link href="/shop" className="transition hover:text-[#3f342d]">
-              Shop
-            </Link>
             <a
               href="https://www.instagram.com/ivona_unikat_nakit/"
               target="_blank"

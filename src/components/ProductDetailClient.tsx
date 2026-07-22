@@ -98,7 +98,7 @@ export default function ProductDetailClient({
             <button
               type="button"
               onClick={() => addItem(product, selectedSize)}
-              className="inline-flex items-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-700"
+              className="inline-flex cursor-pointer items-center rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-700"
             >
               <ShoppingBag className="mr-2 h-4 w-4" />
               Dodaj u košaricu

@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const getTotalItems = useCartStore((state) => state.getTotalItems);
+  const totalItems = useCartStore((state) => state.getTotalItems());
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,9 +48,9 @@ export default function Header() {
               className="relative rounded-full border border-[#e4d8c8] bg-white p-2.5 text-[#3f342d] transition hover:border-[#c8ae88] hover:text-[#2c241f]"
             >
               <ShoppingCart className="h-5 w-5" />
-              {isMounted && getTotalItems() > 0 && (
+              {isMounted && totalItems > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#3f342d] text-[10px] font-semibold text-white">
-                  {getTotalItems()}
+                  {totalItems}
                 </span>
               )}
             </Link>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Trash2, ShoppingBag } from "lucide-react";
+import { Trash2, ShoppingBag, Plus, Minus } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
@@ -126,23 +126,39 @@ export default function CartPage() {
                     <label className="text-sm font-medium text-gray-600">
                       Količina
                     </label>
-                    <select
-                      value={item.quantity}
-                      onChange={(event) =>
-                        updateQuantity(
-                          item.product._id,
-                          Number(event.target.value),
-                          item.size,
-                        )
-                      }
-                      className="rounded-full border border-gray-300 px-3 py-2 text-sm"
-                    >
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="flex items-center gap-2 rounded-full border border-gray-300 px-2 py-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          item.quantity > 1 &&
+                          updateQuantity(
+                            item.product._id,
+                            item.quantity - 1,
+                            item.size,
+                          )
+                        }
+                        disabled={item.quantity <= 1}
+                        className="rounded-full p-1 text-gray-600 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <Minus className="h-4 w-4" />
+                      </button>
+                      <span className="w-6 text-center text-sm font-semibold text-gray-900">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(
+                            item.product._id,
+                            item.quantity + 1,
+                            item.size,
+                          )
+                        }
+                        className="rounded-full p-1 text-gray-600 transition hover:bg-gray-100"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    </div>
 
                     <button
                       type="button"
