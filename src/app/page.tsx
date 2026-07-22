@@ -26,7 +26,8 @@ export default async function Home() {
             Elegantni komadi za svakodnevni i poseban trenutak.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#6f6259]">
-            Otkrij kolekciju nakita koja spaja jednostavnost, sofisticiranost i osobni stil.
+            Otkrij kolekciju nakita koja spaja jednostavnost, sofisticiranost i
+            osobni stil.
           </p>
           <Link
             href="/shop"
@@ -40,9 +41,14 @@ export default async function Home() {
       <section className="container mx-auto px-4 py-6 sm:py-10">
         <div className="mb-8 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-semibold text-[#2f261f]">
-            {featuredProducts.length > 0 ? "Istaknuti proizvodi" : "Naši proizvodi"}
+            {featuredProducts.length > 0
+              ? "Istaknuti proizvodi"
+              : "Naši proizvodi"}
           </h2>
-          <Link href="/shop" className="text-sm font-medium text-[#8b7563] transition hover:text-[#3f342d]">
+          <Link
+            href="/shop"
+            className="text-sm font-medium text-[#8b7563] transition hover:text-[#3f342d]"
+          >
             Vidi sve →
           </Link>
         </div>
@@ -64,7 +70,10 @@ export default async function Home() {
         <div className="container mx-auto rounded-[2rem] border border-[#e9dfd1] bg-[#f7efe7] px-6 py-12 text-center sm:px-10 lg:px-16">
           <h2 className="text-3xl font-semibold text-[#2f261f]">O nakitu</h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-[#6f6259]">
-            Svaki komad nastaje s pažnjom, ljepotom i željom da donese osjećaj posebnosti. Ručno izrađeni detalji, kvalitetni materijali i elegantan dizajn čine ovaj nakit idealnim za one koji vole jedinstvene, sofisticirane komade.
+            Svaki komad nastaje s pažnjom, ljepotom i željom da donese osjećaj
+            posebnosti. Ručno izrađeni detalji, kvalitetni materijali i
+            elegantan dizajn čine ovaj nakit idealnim za one koji vole
+            jedinstvene, sofisticirane komade.
           </p>
         </div>
       </section>

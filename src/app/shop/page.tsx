@@ -17,7 +17,8 @@ export default async function ShopPage() {
           </p>
           <h1 className="text-4xl font-bold text-gray-900">Shop</h1>
           <p className="mt-3 max-w-2xl text-lg text-gray-600">
-            Otkrij ručno izrađene komade nakita koji su spremni za tvoju narudžbu.
+            Otkrij ručno izrađene komade nakita koji su spremni za tvoju
+            narudžbu.
           </p>
         </div>
 
@@ -37,7 +38,9 @@ export default async function ShopPage() {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-8 py-16 text-center">
-          <p className="text-lg text-gray-600">Trenutno nema proizvoda u ponudi.</p>
+          <p className="text-lg text-gray-600">
+            Trenutno nema proizvoda u ponudi.
+          </p>
         </div>
       )}
     </div>

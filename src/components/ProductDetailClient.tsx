@@ -12,10 +12,12 @@ interface ProductDetailClientProps {
   product: Product;
 }
 
-export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+export default function ProductDetailClient({
+  product,
+}: ProductDetailClientProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
-    product.sizes?.[0]
+    product.sizes?.[0],
   );
 
   const imageUrl = product.images?.[0]
@@ -24,7 +26,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   return (
     <div className="container mx-auto px-4 py-16">
-      <Link href="/shop" className="mb-8 inline-block text-sm font-medium text-gray-600 hover:text-gray-900">
+      <Link
+        href="/shop"
+        className="mb-8 inline-block text-sm font-medium text-gray-600 hover:text-gray-900"
+      >
         ← Povratak na shop
       </Link>
 
@@ -48,7 +53,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-gray-500">
             {product.category}
           </p>
-          <h1 className="mt-3 text-4xl font-bold text-gray-900">{product.name}</h1>
+          <h1 className="mt-3 text-4xl font-bold text-gray-900">
+            {product.name}
+          </h1>
 
           <p className="mt-4 text-xl font-semibold text-gray-900">
             €{product.price.toFixed(2)}
@@ -83,7 +90,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           )}
 
           <p className="mt-8 text-lg leading-8 text-gray-700">
-            {product.description || "Ovo je ručno izrađen komad nakita spreman za narudžbu."}
+            {product.description ||
+              "Ovo je ručno izrađen komad nakita spreman za narudžbu."}
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">

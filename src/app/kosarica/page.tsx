@@ -19,7 +19,10 @@ export default function CartPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const totalPrice = useMemo(() => {
-    return items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    return items.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0,
+    );
   }, [items]);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -28,12 +31,12 @@ export default function CartPage() {
     const orderSummary = items
       .map(
         (item) =>
-          `- ${item.product.name} (${item.quantity}x, ${item.size || "standardna veličina"})`
+          `- ${item.product.name} (${item.quantity}x, ${item.size || "standardna veličina"})`,
       )
       .join("\n");
 
     const body = encodeURIComponent(
-      `Pozdrav,\n\nŽelim naručiti sljedeće proizvode:\n${orderSummary}\n\nIme: ${customerName}\nEmail: ${customerEmail}\nTelefon: ${customerPhone}\nNapomena: ${note || "-"}\n\nUkupno: €${totalPrice.toFixed(2)}`
+      `Pozdrav,\n\nŽelim naručiti sljedeće proizvode:\n${orderSummary}\n\nIme: ${customerName}\nEmail: ${customerEmail}\nTelefon: ${customerPhone}\nNapomena: ${note || "-"}\n\nUkupno: €${totalPrice.toFixed(2)}`,
     );
 
     window.location.href = `mailto:info@nakitshop.hr?subject=${encodeURIComponent("Nova narudžba")}&body=${body}`;
@@ -46,7 +49,9 @@ export default function CartPage() {
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
           <ShoppingBag className="h-8 w-8 text-gray-700" />
         </div>
-        <h1 className="mt-6 text-3xl font-bold text-gray-900">Košarica je prazna</h1>
+        <h1 className="mt-6 text-3xl font-bold text-gray-900">
+          Košarica je prazna
+        </h1>
         <p className="mt-3 text-gray-600">
           Dodaj proizvode u košaricu i narudžba će biti odmah spremna.
         </p>
@@ -86,17 +91,30 @@ export default function CartPage() {
               : "/placeholder.jpg";
 
             return (
-              <div key={`${item.product._id}-${item.size || "default"}`} className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center">
+              <div
+                key={`${item.product._id}-${item.size || "default"}`}
+                className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center"
+              >
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100">
-                  <Image src={imageUrl} alt={item.product.name} fill className="object-cover" sizes="96px" />
+                  <Image
+                    src={imageUrl}
+                    alt={item.product.name}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
+                  />
                 </div>
 
                 <div className="flex-1">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-900">{item.product.name}</h2>
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        {item.product.name}
+                      </h2>
                       <p className="text-sm text-gray-500">
-                        {item.size ? `Veličina: ${item.size}` : "Standardna veličina"}
+                        {item.size
+                          ? `Veličina: ${item.size}`
+                          : "Standardna veličina"}
                       </p>
                     </div>
                     <p className="text-lg font-semibold text-gray-900">
@@ -105,11 +123,17 @@ export default function CartPage() {
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <label className="text-sm font-medium text-gray-600">Količina</label>
+                    <label className="text-sm font-medium text-gray-600">
+                      Količina
+                    </label>
                     <select
                       value={item.quantity}
                       onChange={(event) =>
-                        updateQuantity(item.product._id, Number(event.target.value), item.size)
+                        updateQuantity(
+                          item.product._id,
+                          Number(event.target.value),
+                          item.size,
+                        )
                       }
                       className="rounded-full border border-gray-300 px-3 py-2 text-sm"
                     >
@@ -136,9 +160,12 @@ export default function CartPage() {
         </div>
 
         <div className="rounded-3xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
-          <h2 className="text-2xl font-semibold text-gray-900">Podaci za narudžbu</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Podaci za narudžbu
+          </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Nakon što ispuniš podatke, otvorit će se tvoj e-mail klijent sa spremnom narudžbom.
+            Nakon što ispuniš podatke, otvorit će se tvoj e-mail klijent sa
+            spremnom narudžbom.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -180,9 +207,18 @@ export default function CartPage() {
           </form>
 
           <div className="mt-6 rounded-2xl bg-white p-4 text-sm text-gray-700 shadow-sm">
-            <p className="font-semibold text-gray-900">Ukupno: €{totalPrice.toFixed(2)}</p>
-            <p className="mt-2">Narudžba će biti poslana na e-mail i odmah spremna za daljnju obradu.</p>
-            {submitted && <p className="mt-3 text-green-600">E-mail je pripremljen. Pošalji ga ako je potrebno.</p>}
+            <p className="font-semibold text-gray-900">
+              Ukupno: €{totalPrice.toFixed(2)}
+            </p>
+            <p className="mt-2">
+              Narudžba će biti poslana na e-mail i odmah spremna za daljnju
+              obradu.
+            </p>
+            {submitted && (
+              <p className="mt-3 text-green-600">
+                E-mail je pripremljen. Pošalji ga ako je potrebno.
+              </p>
+            )}
           </div>
         </div>
       </div>
