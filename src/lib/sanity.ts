@@ -71,13 +71,16 @@ export async function getProductBySlug(slug: string) {
 export async function getProductsByCategory(category: string) {
   return client.fetch(
     `
-    *[_type == "product" && category == $category && inStock == true] {
+    *[_type == "product" && category == $category && inStock == true] | order(_createdAt desc) {
       _id,
       name,
       slug,
       images,
       price,
-      material
+      category,
+      material,
+      featured,
+      inStock
     }
   `,
     { category }

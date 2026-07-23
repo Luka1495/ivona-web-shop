@@ -19,6 +19,7 @@
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
     "sanity": "^4.9.0",
+    "stripe": "^22.3.2",
     "styled-components": "^6.1.19",
     "zustand": "^5.0.8"
   },

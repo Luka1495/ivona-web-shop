@@ -67,6 +67,7 @@ export const productType = defineType({
           { title: "Naušnice", value: "nausnice" },
           { title: "Ogrlice", value: "ogrlice" },
           { title: "Setovi", value: "setovi" },
+          { title: "Ostalo", value: "ostalo" },
         ],
       },
       validation: (Rule) => Rule.required(),

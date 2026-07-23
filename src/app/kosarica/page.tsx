@@ -1,22 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { Trash2, ShoppingBag, Plus, Minus } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanity";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function CartPage() {
+function CartPageContent() {
   const items = useCartStore((state) => state.items);
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const clearCart = useCartStore((state) => state.clearCart);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [customerCity, setCustomerCity] = useState("");
+  const [customerPostalCode, setCustomerPostalCode] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Kartično plaćanje");
   const [note, setNote] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [hasProcessedSuccess, setHasProcessedSuccess] = useState(false);
+
+  const checkoutStatus = searchParams.get("checkout");
 
   const totalPrice = useMemo(() => {
     return items.reduce(
@@ -25,22 +37,129 @@ export default function CartPage() {
     );
   }, [items]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  useEffect(() => {
+    if (checkoutStatus !== "success" || hasProcessedSuccess) {
+      return;
+    }
+
+    const pendingOrder = window.sessionStorage.getItem("pending-card-order");
+
+    if (!pendingOrder) {
+      setHasProcessedSuccess(true);
+      return;
+    }
+
+    const submitPendingOrder = async () => {
+      try {
+        const payload = JSON.parse(pendingOrder);
+        const response = await fetch("/api/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Nije moguće poslati narudžbu.");
+        }
+
+        window.sessionStorage.removeItem("pending-card-order");
+        setSubmitted(true);
+        clearCart();
+        setHasProcessedSuccess(true);
+      } catch (error) {
+        setSubmitError(
+          error instanceof Error
+            ? error.message
+            : "Došlo je do pogreške prilikom obrade narudžbe.",
+        );
+        setHasProcessedSuccess(true);
+      }
+    };
+
+    void submitPendingOrder();
+  }, [checkoutStatus, clearCart, hasProcessedSuccess]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError("");
 
-    const orderSummary = items
-      .map(
-        (item) =>
-          `- ${item.product.name} (${item.quantity}x, ${item.size || "standardna veličina"})`,
-      )
-      .join("\n");
+    try {
+      if (paymentMethod === "Kartično plaćanje") {
+        const payload = {
+          customerName,
+          customerEmail,
+          customerPhone,
+          customerCity,
+          customerPostalCode,
+          customerAddress,
+          paymentMethod,
+          note,
+          totalPrice,
+          items,
+        };
 
-    const body = encodeURIComponent(
-      `Pozdrav,\n\nŽelim naručiti sljedeće proizvode:\n${orderSummary}\n\nIme: ${customerName}\nEmail: ${customerEmail}\nTelefon: ${customerPhone}\nNapomena: ${note || "-"}\n\nUkupno: €${totalPrice.toFixed(2)}`,
-    );
+        window.sessionStorage.setItem("pending-card-order", JSON.stringify(payload));
 
-    window.location.href = `mailto:info@nakitshop.hr?subject=${encodeURIComponent("Nova narudžba")}&body=${body}`;
-    setSubmitted(true);
+        const response = await fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success || !data.url) {
+          throw new Error(data.error || "Nije moguće pokrenuti plaćanje.");
+        }
+
+        window.location.href = data.url;
+        return;
+      }
+
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerName,
+          customerEmail,
+          customerPhone,
+          customerCity,
+          customerPostalCode,
+          customerAddress,
+          paymentMethod,
+          note,
+          totalPrice,
+          items,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Nije moguće poslati narudžbu.");
+      }
+
+      setSubmitted(true);
+      clearCart();
+      router.push("/shop");
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Došlo je do pogreške. Pokušaj ponovno.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -180,8 +299,8 @@ export default function CartPage() {
             Podaci za narudžbu
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Nakon što ispuniš podatke, otvorit će se tvoj e-mail klijent sa
-            spremnom narudžbom.
+            Nakon što ispuniš podatke, narudžba će biti poslana direktno i
+            spremna za obradu.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -207,6 +326,60 @@ export default function CartPage() {
               className="w-full rounded-2xl border border-gray-300 px-4 py-3"
               placeholder="Telefon"
             />
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <input
+                required
+                value={customerCity}
+                onChange={(event) => setCustomerCity(event.target.value)}
+                className="w-full rounded-2xl border border-gray-300 px-4 py-3"
+                placeholder="Grad"
+              />
+              <input
+                required
+                value={customerPostalCode}
+                onChange={(event) => setCustomerPostalCode(event.target.value)}
+                className="w-full rounded-2xl border border-gray-300 px-4 py-3"
+                placeholder="Poštanski broj"
+              />
+            </div>
+
+            <input
+              required
+              value={customerAddress}
+              onChange={(event) => setCustomerAddress(event.target.value)}
+              className="w-full rounded-2xl border border-gray-300 px-4 py-3"
+              placeholder="Ulica i kućni broj"
+            />
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Način plaćanja
+              </label>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <label className="flex cursor-pointer items-center gap-2 rounded-2xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Kartično plaćanje"
+                    checked={paymentMethod === "Kartično plaćanje"}
+                    onChange={(event) => setPaymentMethod(event.target.value)}
+                  />
+                  Kartično plaćanje
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 rounded-2xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Pouzećem"
+                    checked={paymentMethod === "Pouzećem"}
+                    onChange={(event) => setPaymentMethod(event.target.value)}
+                  />
+                  Pouzećem
+                </label>
+              </div>
+            </div>
+
             <textarea
               value={note}
               onChange={(event) => setNote(event.target.value)}
@@ -216,9 +389,10 @@ export default function CartPage() {
 
             <button
               type="submit"
-              className="w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-700"
+              disabled={isSubmitting}
+              className="w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Pošalji narudžbu
+              {isSubmitting ? "Šaljem narudžbu..." : "Pošalji narudžbu"}
             </button>
           </form>
 
@@ -227,17 +401,36 @@ export default function CartPage() {
               Ukupno: €{totalPrice.toFixed(2)}
             </p>
             <p className="mt-2">
-              Narudžba će biti poslana na e-mail i odmah spremna za daljnju
-              obradu.
+              Ako odabereš kartično plaćanje, bit ćeš preusmjeren na siguran
+              Stripe checkout. Za pouzeće narudžba se šalje direktno.
             </p>
-            {submitted && (
+            {checkoutStatus === "success" && (
               <p className="mt-3 text-green-600">
-                E-mail je pripremljen. Pošalji ga ako je potrebno.
+                Plaćanje je uspješno završeno. Hvala na narudžbi!
               </p>
             )}
+            {checkoutStatus === "cancel" && (
+              <p className="mt-3 text-red-600">
+                Plaćanje je otkazano. Ako želiš, možeš pokušati ponovno.
+              </p>
+            )}
+            {submitted && (
+              <p className="mt-3 text-green-600">
+                Narudžba je uspješno poslana. Hvala!
+              </p>
+            )}
+            {submitError && <p className="mt-3 text-red-600">{submitError}</p>}
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-16">Učitavanje...</div>}>
+      <CartPageContent />
+    </Suspense>
   );
 }
