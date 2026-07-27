@@ -67,14 +67,130 @@ export default async function Home() {
       </section>
 
       <section className="px-4 py-16 sm:py-20">
-        <div className="container mx-auto rounded-[2rem] border border-[#e9dfd1] bg-[#f7efe7] px-6 py-12 text-center sm:px-10 lg:px-16">
-          <h2 className="text-3xl font-semibold text-[#2f261f]">O nakitu</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-[#6f6259]">
-            Svaki komad nastaje s pažnjom, ljepotom i željom da donese osjećaj
-            posebnosti. Ručno izrađeni detalji, kvalitetni materijali i
-            elegantan dizajn čine ovaj nakit idealnim za one koji vole
-            jedinstvene, sofisticirane komade.
-          </p>
+        <div className="container mx-auto rounded-[2rem] border border-[#e9dfd1] bg-[#f7efe7] px-6 py-12 sm:px-10 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-3xl font-semibold text-[#2f261f]">
+              O nakitu
+            </h2>
+            <div className="mt-8 space-y-6 text-lg leading-8 text-[#6f6259]">
+              <p>
+                Naš nakit izrađen je od <em>18K Gold Filled</em> materijala –
+                visokokvalitetnog materijala koji je nježan prema koži i
+                prikladan čak i za osobe s osjetljivom kožom.
+              </p>
+              <p>
+                Za razliku od klasične pozlate, kod koje se tanki sloj zlata s
+                vremenom može istrošiti, <em>18K Gold Filled</em> sastoji se
+                od debelog sloja pravog 18-karatnog zlata (najmanje 5 %
+                ukupne težine materijala) koji je pod visokim pritiskom i
+                temperaturom trajno spojen s metalnom jezgrom. Rezultat je
+                iznimno izdržljiv i dugotrajan materijal koji godinama zadržava
+                svoj izgled.
+              </p>
+              <p>
+                Materijal ne sadrži nikal, a zahvaljujući debelom sloju pravog
+                zlata površina nakita koja dolazi u dodir s kožom sastoji se od
+                zlata, zbog čega je ugodan za nošenje i prikladan za većinu
+                osoba s osjetljivom kožom.
+              </p>
+              <p>
+                Naš nakit stvoren je za svakodnevno nošenje. Možete ga nositi
+                tijekom cijelog dana, uključujući tuširanje, pranje ruku,
+                boravak na plaži i druge uobičajene svakodnevne aktivnosti.
+              </p>
+              <p>
+                Kao i svaki kvalitetan komad nakita, uz malo pažnje zadržat će
+                svoj sjaj još dulje. Dugotrajno izlaganje agresivnim
+                kemikalijama, kloriranoj vodi, parfemima ili kozmetičkim
+                proizvodima može s vremenom utjecati na njegov izgled, a
+                prirodne promjene mogu nastati i zbog individualnog pH kože.
+                Zato preporučujemo da nakit, kada ga ne nosite, čuvate na suhom
+                mjestu te ga po potrebi prebrišete mekom, suhom krpicom.
+              </p>
+              <p>
+                <em>
+                  18K Gold Filled nakit stvoren je kako bi bio dio vaše
+                  svakodnevice – elegantan, izdržljiv i bezbrižan za nošenje,
+                  iz dana u dan.
+                </em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-16 sm:pb-20">
+        <div className="container mx-auto rounded-[2rem] border border-[#e9dfd1] bg-white/80 px-6 py-12 shadow-[0_20px_60px_-30px_rgba(63,52,45,0.2)] sm:px-10 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-3xl font-semibold text-[#2f261f]">
+              Dostava
+            </h2>
+            <div className="mt-8 space-y-6 text-lg leading-8 text-[#6f6259]">
+              <p>
+                Dostava se vrši putem BoxNow paketomata.
+              </p>
+              <div className="rounded-[1.25rem] border border-[#e9dfd1] bg-[#f9f4eb] p-6">
+                <h3 className="text-xl font-semibold text-[#2f261f]">
+                  Standardna dostava
+                </h3>
+                <ul className="mt-4 space-y-2">
+                  <li>• Cijena: 3 EUR</li>
+                  <li>
+                    • Vrijeme isporuke: u pravilu 2–3 radna dana od slanja
+                    pošiljke do dostave u odabrani BoxNow paketomat.
+                  </li>
+                </ul>
+              </div>
+              <p>
+                Besplatna standardna dostava dostupna je za sve narudžbe iznad
+                50€.
+              </p>
+              <p>
+                Nakon što zaprimimo vašu narudžbu, započinjemo njezinu obradu.
+                Kada pošiljku predamo dostavnoj službi, primit ćete e-mail s
+                potvrdom o otpremi. Kada pošiljka stigne u odabrani BoxNow
+                paketomat, primit ćete SMS ili e-mail s kodom (PIN-om) za
+                preuzimanje. Paket možete preuzeti u bilo koje doba dana ili
+                noći (24/7).
+              </p>
+              <p>
+                Pošiljka će u paketomatu biti pohranjena ograničeno vrijeme.
+                Nakon isteka tog roka vraća se pošiljatelju. Prilikom
+                preuzimanja potrebno je unijeti zaprimljeni kod (PIN) na zaslonu
+                paketomata.
+              </p>
+              <p>
+                Molimo vas da prilikom preuzimanja pregledate paket i provjerite
+                postoje li vidljiva oštećenja. U slučaju oštećenja, molimo da
+                nas odmah kontaktirate.
+              </p>
+              <p>
+                Svaki komad nakita pažljivo pakiramo kako bi do vas stigao u
+                besprijekornom stanju.
+              </p>
+              <p>
+                Trenutačno dostavljamo isključivo unutar Republike Hrvatske.
+              </p>
+              <p>
+                Napomena: navedeni rokovi isporuke su procijenjeni i mogu se
+                promijeniti zbog okolnosti na koje ne možemo utjecati
+                (primjerice vremenskih uvjeta ili povećanog opsega posla
+                dostavne službe). Dostava u BoxNow paketomat dostupna je ovisno
+                o pokrivenosti BoxNow mreže na vašem području.
+              </p>
+              <p>
+                Ako imate pitanja vezana uz dostavu, slobodno nam se obratite
+                putem e-maila na{' '}
+                <a
+                  href="mailto:ivona.unikat.nakit@gmail.com"
+                  className="font-semibold text-[#8b7563] underline decoration-[#b08c64] underline-offset-2"
+                >
+                  ivona.unikat.nakit@gmail.com
+                </a>
+                .
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>
